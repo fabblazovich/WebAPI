@@ -27,8 +27,8 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpDelete ("{id}")]
-        public IActionResult Delete(int id) => Delete(id);
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id) => Ok();
     }
 
     
