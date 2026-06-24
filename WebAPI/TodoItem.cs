@@ -6,5 +6,7 @@ namespace WebAPI
         public string Title { get; set; } = string.Empty;
 
         public bool IsDone { get; set; }
+
+        public static List<TodoItem> Items { get; set; }
     }
 }
