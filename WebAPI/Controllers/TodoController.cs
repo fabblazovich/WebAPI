@@ -1,5 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
@@ -7,43 +9,47 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
+        private readonly ITodoService _todoService;
+
+        public TodoController (ITodoService todoService)
+        {
+            _todoService = todoService;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
-            TodoItem.FillList();
 
-            return Ok(TodoItem.TodoItems);
+            return Ok(_todoService.GetAll());
         }
 
 
         [HttpGet("{id}")]
         public IActionResult GetbyID(int id)
         {
-            var todo = TodoItem.TodoItems.FirstOrDefault(x => x.ID == id);
-            return todo is null 
-                ?  NotFound()
-                :  Ok(todo);
+            var todo = _todoService.GetById(id);
+            return todo != null
+                ? Ok(id)
+                : NotFound();
         }
 
         [HttpPost]
-        public IActionResult Create(TodoItem todo)
+        public IActionResult Create(TodoItem todo_test)
         {
-            TodoItem.TodoItems.Add(todo);
-            return Created();
+           var todo = _todoService.Create(todo_test);
+           return todo == true
+                ? Created()
+                : BadRequest();
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var todo = TodoItem.TodoItems.FirstOrDefault(x => x.ID == id);
-            if (todo is null) return NotFound(id);
-
-            TodoItem.DeleteToDo(id);
-
-            return Ok();
+            var todo = _todoService.Delete(id);
+            return todo == true
+                 ? Ok()
+                 : NotFound();
         }
     }
-
-    
 }
