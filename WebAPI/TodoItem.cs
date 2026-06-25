@@ -1,3 +1,4 @@
+
 namespace WebAPI
 {
     public class TodoItem
@@ -9,7 +10,26 @@ namespace WebAPI
 
         public bool IsDone { get; set; }
 
+        public static List<TodoItem> TodoItems = new List<TodoItem>();
 
-        public static List<TodoItem> Items { get; set; } = new List<TodoItem>();
+        public TodoItem(int ID, string title, bool IsDone)
+        {
+        }
+
+        public static void FillList()
+        {
+            TodoItems.AddRange(new List<TodoItem>()
+            {
+                new TodoItem(1,"Swagger testen",true),
+                new TodoItem(2,"REST API verstehen",true),
+                new TodoItem(3,"Todo Controller erweitern",false),
+                new TodoItem(1,"Git Branches üben",true),
+            });
+        }
+
+        internal static void DeleteToDo(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

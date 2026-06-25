@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Http;
 
 namespace WebAPI.Controllers
 {
@@ -8,27 +8,41 @@ namespace WebAPI.Controllers
     public class TodoController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get() => Ok();
+        public IActionResult Get()
+        {
+            TodoItem.FillList();
+
+            return Ok(TodoItem.TodoItems);
+        }
 
 
         [HttpGet("{id}")]
         public IActionResult GetbyID(int id)
         {
-            var todo = TodoItem.Items.FirstOrDefault(x => x.ID == id);
-            if (todo == null) return NotFound();
-            else return Ok(todo);
+            var todo = TodoItem.TodoItems.FirstOrDefault(x => x.ID == id);
+            return todo is null 
+                ?  NotFound()
+                :  Ok(todo);
         }
 
         [HttpPost]
         public IActionResult Create(TodoItem todo)
         {
-            TodoItem.Items.Add(todo);
+            TodoItem.TodoItems.Add(todo);
             return Created();
         }
 
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id) => Ok();
+        public IActionResult Delete(int id)
+        {
+            var todo = TodoItem.TodoItems.FirstOrDefault(x => x.ID == id);
+            if (todo is null) return NotFound(id);
+
+            TodoItem.DeleteToDo(id);
+
+            return Ok();
+        }
     }
 
     
