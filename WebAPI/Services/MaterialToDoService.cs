@@ -13,12 +13,27 @@ namespace WebAPI.Services
 
         public bool Create(TodoItem todo)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(todo.Title))
+            {
+                return false;
+            }
+
+            todo.ID = _todos.Count == 0
+                ? 1
+                : _todos.Max(x => x.ID) + 1;
+
+            _todos.Add(todo);
+
+            return true;
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var todo = _todos.FirstOrDefault(todo => todo.ID == id);
+            if (todo is null) return false;
+           
+            _todos.Remove(todo);
+            return true;
         }
 
         public List<TodoItem> GetAll()
@@ -28,7 +43,26 @@ namespace WebAPI.Services
 
         public TodoItem? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _todos.FirstOrDefault(todo => todo.ID == id);
+        }
+
+        public List<TodoItem> GetDoneTodos()
+        {
+            return _todos.Where(x => x.IsDone).ToList();
+        }
+
+        public List<TodoItem> GetOpenTodos()
+        {
+            return _todos
+                .Where(x => !x.IsDone)
+                .ToList();
+        }
+
+        public List<string> GetTitles()
+        {
+            return _todos
+                .Select(x => x.Title)
+                .ToList();
         }
     }
 }

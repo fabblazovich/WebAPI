@@ -28,5 +28,23 @@ namespace WebAPI.Services
         {
             throw new NotImplementedException();
         }
+        public List<TodoItem> GetDoneTodos()
+        {
+            return _todos.Where(x => x.IsDone).ToList();
+        }
+
+        public List<TodoItem> GetOpenTodos()
+        {
+            return _todos
+                .Where(x => !x.IsDone)
+                .ToList();
+        }
+
+        public List<string> GetTitles()
+        {
+            return _todos
+                .Select(x => x.Title)
+                .ToList();
+        }
     }
 }

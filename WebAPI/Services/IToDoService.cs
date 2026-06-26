@@ -8,5 +8,9 @@ namespace WebAPI.Services
         TodoItem? GetById(int id);
         bool Create(TodoItem todo);
         bool Delete(int id);
+
+        List<TodoItem> GetDoneTodos();
+        List<TodoItem> GetOpenTodos();
+        List<string> GetTitles();
     }
 }
