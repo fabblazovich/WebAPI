@@ -1,6 +1,10 @@
 
+using System;
+using Microsoft.EntityFrameworkCore;
 using WebAPI;
+using WebAPI.Data;
 using WebAPI.Services;
+using static WebAPI.Services.DatabaseToDoService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<AddDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<ITodoService, MaterialToDoService>();
+builder.Services.AddScoped<ITodoService, DatabaseTodoService>();
 
 var app = builder.Build();
 

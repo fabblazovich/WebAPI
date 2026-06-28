@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.DTO;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers
@@ -29,15 +30,22 @@ namespace WebAPI.Controllers
         {
             var todo = _todoService.GetById(id);
             return todo != null
-                ? Ok(id)
+                ? Ok(todo)
                 : NotFound();
         }
 
         [HttpPost]
-        public IActionResult Create(TodoItem todo_test)
+        public IActionResult Create(CreateToDoRequest todo_test)
         {
-           var todo = _todoService.Create(todo_test);
-           return todo == true
+            var todo = new TodoItem
+            {
+                Description = todo_test.Description,   
+                IsDone = todo_test.IsDone,
+                Title = todo_test.Title,
+            };
+             var created = _todoService.Create(todo);
+
+           return created == true
                 ? Created()
                 : BadRequest();
         }

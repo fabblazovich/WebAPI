@@ -16,17 +16,27 @@ namespace WebAPI.Services
         }
         public bool Create(TodoItem todo)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(todo.Title)) return false;
+
+            todo.ID = _todos.Count == 0
+                ? 1: _todos.Max(x => x.ID) + 1;
+
+            _todos.Add(todo);
+            return true;
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var todo = _todos.FirstOrDefault(x => x.ID == id);
+            if (todo is null) return false;
+
+            _todos.Remove(todo);
+            return true;
         }
 
         public TodoItem? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _todos.FirstOrDefault(x => x.ID == id);
         }
         public List<TodoItem> GetDoneTodos()
         {

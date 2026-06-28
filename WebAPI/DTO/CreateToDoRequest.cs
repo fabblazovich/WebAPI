@@ -1,9 +1,7 @@
-
-namespace WebAPI
+﻿namespace WebAPI.DTO
 {
-    public class TodoItem
+    public class CreateToDoRequest
     {
-        public int ID { get; set; }
         public string Title { get; set; } = string.Empty;
 
         public string? Description { get; set; }
