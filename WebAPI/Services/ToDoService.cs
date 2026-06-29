@@ -3,7 +3,7 @@ using WebAPI.DTO;
 
 namespace WebAPI.Services
 {
-    public class ToDoService : ITodoService
+    public class ToDoService
     {
         private readonly List<TodoItem> _todos = new()
         {

@@ -4,28 +4,21 @@ using WebAPI.DTO;
 
 namespace WebAPI.Services
 {
-    public class DatabaseToDoService
+    public class DatabaseToDoService :ITodoService
     {
-        public class DatabaseTodoService : ITodoService
-        {
-            private readonly AddDbContext _context;
+        private readonly AddDbContext _context;
 
-            public DatabaseTodoService(AddDbContext context)
+            public DatabaseToDoService(AddDbContext context)
             {
                 _context = context;
             }
 
-            public List<TodoItem> GetAll()
+            public async Task<TodoItem?> GetById(int id)
             {
-                return _context.Todos.ToList();
+                return await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
             }
 
-            public TodoItem? GetById(int id)
-            {
-                return _context.Todos.FirstOrDefault(todo => todo.ID == id);
-            }
-
-            public bool Create(TodoItem todo)
+            public async Task<bool> Create(TodoItem todo)
             {
                 if (string.IsNullOrWhiteSpace(todo.Title))
                 {
@@ -33,78 +26,76 @@ namespace WebAPI.Services
                 }
  
                 _context.Todos.Add(todo);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
 
-            public bool Delete(int id)
+            public async Task<bool> Delete(int id)
             {
-                var todo = _context.Todos.FirstOrDefault(todo => todo.ID == id);
+                var todo = await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
 
-                if (todo is null)
-                {
-                    return false;
-                }
-
+                if (todo is null) return false;
+              
                 _context.Todos.Remove(todo);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return true;
             }
 
-            public List<TodoItem> GetDoneTodos()
+            public async Task<List<TodoItem>> GetDoneTodos()
             {
-                return _context.Todos
+                return await _context.Todos
                     .Where(todo => todo.IsDone)
-                    .ToList();
+                    .ToListAsync();
             }
 
-            public List<TodoItem> GetOpenTodos()
+            public async Task<List<TodoItem>> GetOpenTodos()
             {
-                return _context.Todos
+                return await _context.Todos
                     .Where(todo => !todo.IsDone)
-                    .ToList();
+                    .ToListAsync();
             }
 
-            public List<string> GetTitles()
+            public async Task<List<string>> GetTitles()
             {
-                return _context.Todos
+                return await _context.Todos
                     .Select(todo => todo.Title)
-                    .ToList();
+                    .ToListAsync();
             }
 
-            public int GetMaxId()
+            public async Task<int> GetMaxId()
             {
-                return _context.Todos.Any()
-                    ? _context.Todos.Max(todo => todo.ID)
+                return await _context.Todos.AnyAsync()
+                    ? await _context.Todos.MaxAsync(todo => todo.ID)
                     : 0;
             }
 
-            public List<TodoItem> SearchByTitle(string text)
+            public async Task<List<TodoItem>> SearchByTitle(string text)
             {
-                return _context.Todos
+                return await _context.Todos
                     .Where(todo => todo.Title.Contains(text))
-                    .ToList();
+                    .ToListAsync();
             }
 
-            public bool Update(int id, UpdateToDoRequest request)
+            public async Task<bool> Update(int id, UpdateToDoRequest request)
             {
-                var _todo = _context.Todos.FirstOrDefault(_todo => _todo.ID == id);
+                var todo = await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
 
-                if (_todo == null) return false;
+                if (todo == null) return false;
 
-                if (string.IsNullOrEmpty(request.Title)) return false;
+                if (string.IsNullOrWhiteSpace(request.Title)) return false;
 
-                _todo.Title = request.Title;
-                _todo.Description = request.Description;
-                _todo.IsDone = request.IsDone;
+                todo.Title = request.Title;
+                todo.Description = request.Description;
+                todo.IsDone = request.IsDone;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+
                 return true;
             }
 
-            public List<TodoItem> GetAll(bool? isDone, string? search)
+            public async Task<List<TodoItem>> GetAll(bool? isDone, string? search)
             {
                 var query = _context.Todos.AsQueryable();
 
@@ -118,8 +109,8 @@ namespace WebAPI.Services
                     query = query.Where(todo => todo.Title.Contains(search));
                 }
 
-                return query.ToList();
+                return await query.ToListAsync();
             }
-        }
+        
     }
 }

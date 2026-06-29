@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AddDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ITodoService, DatabaseTodoService>();
+builder.Services.AddScoped<ITodoService, DatabaseToDoService>();
 
 var app = builder.Build();
 

@@ -19,24 +19,24 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(bool? isDone, string? search)
+        public async Task<IActionResult> Get(bool? isDone, string? search)
         {
-            var todos = _todoService.GetAll(isDone, search);
+            var todos = await _todoService.GetAll(isDone, search);
             return Ok(todos);
         }
 
 
         [HttpGet("{id}")]
-        public IActionResult GetbyID(int id)
+        public async Task<IActionResult> GetbyID(int id)
         {
-            var todo = _todoService.GetById(id);
+            var todo = await _todoService.GetById(id);
             return todo != null
                 ? Ok(todo)
                 : NotFound();
         }
 
         [HttpPost]
-        public IActionResult Create(CreateToDoRequest todo_test)
+        public async Task<IActionResult> Create(CreateToDoRequest todo_test)
         {
             var todo = new TodoItem
             {
@@ -44,7 +44,8 @@ namespace WebAPI.Controllers
                 IsDone = todo_test.IsDone,
                 Title = todo_test.Title,
             };
-             var created = _todoService.Create(todo);
+            
+            var created = await _todoService.Create(todo);
 
            return created == true
                 ? Created()
@@ -53,19 +54,18 @@ namespace WebAPI.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var todo = _todoService.Delete(id);
+            var todo = await _todoService.Delete(id);
             return todo == true
                  ? NoContent()
                  : NotFound();
         }
 
-        [HttpPost("{id}")]
-
-        public IActionResult Update (int id, UpdateToDoRequest todo)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update (int id, UpdateToDoRequest todo)
         {
-            var updated = _todoService.Update(id, todo);
+            var updated = await _todoService.Update(id, todo);
 
             return updated == true
                 ? NoContent()
