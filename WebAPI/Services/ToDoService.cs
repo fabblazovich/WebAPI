@@ -1,4 +1,6 @@
 ﻿
+using WebAPI.DTO;
+
 namespace WebAPI.Services
 {
     public class ToDoService : ITodoService
@@ -55,6 +57,16 @@ namespace WebAPI.Services
             return _todos
                 .Select(x => x.Title)
                 .ToList();
+        }
+
+        public bool Update(int id, UpdateToDoRequest todo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TodoItem> GetAll(bool? isDone, string? search)
+        {
+            throw new NotImplementedException();
         }
     }
 }

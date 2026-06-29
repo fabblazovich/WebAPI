@@ -1,4 +1,6 @@
 ﻿
+using WebAPI.DTO;
+
 namespace WebAPI.Services
 {
     public class MaterialToDoService : ITodoService
@@ -41,6 +43,11 @@ namespace WebAPI.Services
             return _todos;
         }
 
+        public List<TodoItem> GetAll(bool? isDone, string? search)
+        {
+            throw new NotImplementedException();
+        }
+
         public TodoItem? GetById(int id)
         {
             return _todos.FirstOrDefault(todo => todo.ID == id);
@@ -63,6 +70,11 @@ namespace WebAPI.Services
             return _todos
                 .Select(x => x.Title)
                 .ToList();
+        }
+
+        public bool Update(int id, UpdateToDoRequest todo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

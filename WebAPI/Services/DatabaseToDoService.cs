@@ -1,4 +1,6 @@
-﻿using WebAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Data;
+using WebAPI.DTO;
 
 namespace WebAPI.Services
 {
@@ -84,6 +86,39 @@ namespace WebAPI.Services
                 return _context.Todos
                     .Where(todo => todo.Title.Contains(text))
                     .ToList();
+            }
+
+            public bool Update(int id, UpdateToDoRequest request)
+            {
+                var _todo = _context.Todos.FirstOrDefault(_todo => _todo.ID == id);
+
+                if (_todo == null) return false;
+
+                if (string.IsNullOrEmpty(request.Title)) return false;
+
+                _todo.Title = request.Title;
+                _todo.Description = request.Description;
+                _todo.IsDone = request.IsDone;
+
+                _context.SaveChanges();
+                return true;
+            }
+
+            public List<TodoItem> GetAll(bool? isDone, string? search)
+            {
+                var query = _context.Todos.AsQueryable();
+
+                if (isDone.HasValue)
+                {
+                    query = query.Where(todo  => todo.IsDone == isDone.Value);
+                }
+
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    query = query.Where(todo => todo.Title.Contains(search));
+                }
+
+                return query.ToList();
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using WebAPI.DTO;
 using WebAPI.Services;
 
@@ -8,20 +9,20 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : ControllerBase
+    public class TodosController : ControllerBase
     {
         private readonly ITodoService _todoService;
 
-        public TodoController (ITodoService todoService)
+        public TodosController (ITodoService todoService)
         {
             _todoService = todoService;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(bool? isDone, string? search)
         {
-
-            return Ok(_todoService.GetAll());
+            var todos = _todoService.GetAll(isDone, search);
+            return Ok(todos);
         }
 
 
@@ -56,8 +57,19 @@ namespace WebAPI.Controllers
         {
             var todo = _todoService.Delete(id);
             return todo == true
-                 ? Ok()
+                 ? NoContent()
                  : NotFound();
+        }
+
+        [HttpPost("{id}")]
+
+        public IActionResult Update (int id, UpdateToDoRequest todo)
+        {
+            var updated = _todoService.Update(id, todo);
+
+            return updated == true
+                ? NoContent()
+                : NotFound();
         }
     }
 }
