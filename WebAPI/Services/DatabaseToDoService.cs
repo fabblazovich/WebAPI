@@ -110,7 +110,6 @@ namespace WebAPI.Services
                 }
 
                 return await query.ToListAsync();
-            }
-        
+            }   
     }
 }
