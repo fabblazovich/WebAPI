@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo_App.View
+namespace Todo_App.Services
 {
-    internal class HelloWorldView
+    internal interface IToDoApiService
     {
+
     }
 }

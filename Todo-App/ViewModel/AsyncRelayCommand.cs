@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo_App.Model
+namespace Todo_App.ViewModel
 {
-    internal class HelloWorldModel
+    internal class AsyncRelayCommand
     {
     }
 }

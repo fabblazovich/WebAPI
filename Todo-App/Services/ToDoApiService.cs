@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Todo_App.ViewModel
+namespace Todo_App.Services
 {
-    internal class HelloWorldViewModel
+    internal class ToDoApiService
     {
     }
 }

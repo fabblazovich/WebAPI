@@ -2,7 +2,6 @@
 using WebAPI;
 
 namespace WebAPI.Data
-
 {
     public class AppDbContext : DbContext
     {
