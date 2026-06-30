@@ -10,7 +10,7 @@ using WebAPI.Data;
 
 namespace WebAPI.Migrations
 {
-    [DbContext(typeof(AddDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20260628160002_InitialCreate")]
     partial class InitialCreate
     {

@@ -1,80 +1,102 @@
 ﻿
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using WebAPI.Data;
 using WebAPI.DTO;
 
 namespace WebAPI.Services
 {
-    public class MaterialToDoService
+    public class MaterialToDoService : ITodoService
     {
-        private readonly List<TodoItem> _todos = new List<TodoItem>()
-        {
-            new TodoItem { ID = 1, Title = "Laptop vorbereiten", IsDone = true },
-            new TodoItem { ID = 2, Title = "USB-Kabel einpacken", IsDone = false },
-            new TodoItem { ID = 3, Title = "Notizbuch mitnehmen", IsDone = false },
-            new TodoItem { ID = 4, Title = "Präsentation testen", IsDone = true }
-        };
+        private readonly AppDbContext _context;
 
-        public bool Create(TodoItem todo)
+        public MaterialToDoService (AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<bool> Create(TodoItem todo)
         {
             if (string.IsNullOrWhiteSpace(todo.Title))
             {
                 return false;
             }
 
-            todo.ID = _todos.Count == 0
-                ? 1
-                : _todos.Max(x => x.ID) + 1;
-
-            _todos.Add(todo);
+            _context.Todos.Add(todo);
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var todo = _todos.FirstOrDefault(todo => todo.ID == id);
+            var todo = await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
             if (todo is null) return false;
            
-            _todos.Remove(todo);
+            _context.Todos.Remove(todo);
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public List<TodoItem> GetAll()
+        public async Task<List<TodoItem>> GetAll()
         {
-            return _todos;
+            return await _context.Todos.ToListAsync();
         }
 
-        public List<TodoItem> GetAll(bool? isDone, string? search)
+        public async Task<List<TodoItem>> GetAll(bool? isDone, string? search)
         {
-            throw new NotImplementedException();
+            var query = _context.Todos.AsQueryable();
+
+            if (isDone.HasValue)
+            {
+                query = query.Where(todo  => todo.IsDone == isDone);
+            }
+        
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(todo => todo.Title.Contains(search));
+            }
+
+            return await query.ToListAsync();
         }
 
-        public TodoItem? GetById(int id)
+        public async Task<TodoItem?> GetById(int id)
         {
-            return _todos.FirstOrDefault(todo => todo.ID == id);
+            return await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
         }
 
-        public List<TodoItem> GetDoneTodos()
+        public async Task<List<TodoItem>> GetDoneTodos()
         {
-            return _todos.Where(x => x.IsDone).ToList();
+            return await _context.Todos.Where(todo => todo.IsDone).ToListAsync();
         }
 
-        public List<TodoItem> GetOpenTodos()
+        public async Task<List<TodoItem>> GetOpenTodos()
         {
-            return _todos
-                .Where(x => !x.IsDone)
-                .ToList();
+            return await _context.Todos.Where(todo => !todo.IsDone).ToListAsync();
         }
 
-        public List<string> GetTitles()
+        public async Task<List<string>> GetTitles()
         {
-            return _todos
-                .Select(x => x.Title)
-                .ToList();
+            return await _context.Todos.Select(todo => todo.Title).ToListAsync();
         }
 
-        public bool Update(int id, UpdateToDoRequest todo)
+        public async Task<bool> Update(int id, UpdateToDoRequest request)
         {
-            throw new NotImplementedException();
+            if (request.Title is null) return false;
+
+            var todo = await _context.Todos.FirstOrDefaultAsync(todo => todo.ID == id);
+
+            if (todo is null) return false;
+
+            todo.Title = request.Title;
+            todo.Description = request.Description;
+            todo.IsDone = request.IsDone;
+
+            _context.Todos.Add(todo);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

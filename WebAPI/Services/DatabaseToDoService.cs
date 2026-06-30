@@ -6,9 +6,9 @@ namespace WebAPI.Services
 {
     public class DatabaseToDoService :ITodoService
     {
-        private readonly AddDbContext _context;
+        private readonly AppDbContext _context;
 
-            public DatabaseToDoService(AddDbContext context)
+            public DatabaseToDoService(AppDbContext context)
             {
                 _context = context;
             }

@@ -4,9 +4,9 @@ using WebAPI;
 namespace WebAPI.Data
 
 {
-    public class AddDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public AddDbContext (DbContextOptions<AddDbContext> options)
+        public AppDbContext (DbContextOptions<AppDbContext> options)
             : base(options)
         {
 
