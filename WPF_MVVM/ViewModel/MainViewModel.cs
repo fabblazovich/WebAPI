@@ -16,10 +16,13 @@ namespace WPF_MVVM.ViewModel
         public ObservableCollection<User> Users { get; set; }
         public ICommand ShowWindowsCommand { get; set; }
 
+        public ICommand ShowNewWindowsCommand { get; set; }
+
         public MainViewModel() 
         {
            Users = UserManager.GetUsers();
            ShowWindowsCommand = new RelayCommand(ShowWindow, CanShowWindow);
+           ShowNewWindowsCommand = new RelayCommand(ShowNewWindow, CanShowWindow);
         }
 
         private bool CanShowWindow(object obj)
@@ -31,6 +34,12 @@ namespace WPF_MVVM.ViewModel
         {
             AddUser addUserWindow = new AddUser();
             addUserWindow.Show();           
+        }
+
+        private void ShowNewWindow(object obj)
+        {
+            NewWindow newWindow = new NewWindow();
+            newWindow.Show();
         }
     }
 }

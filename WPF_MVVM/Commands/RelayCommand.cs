@@ -20,7 +20,6 @@ namespace WPF_MVVM.Commands
             _Execute = ExecuteMethod;
             _CanExecute = CanExecuteMethod;
         }
-
         public bool CanExecute(object? parameter)
         {
             return _CanExecute(parameter);

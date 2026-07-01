@@ -26,6 +26,16 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
 
+            <Button
+Height="30"
+Command="{Binding ShowNewWindowsCommand }"
+    Content="Show New Window"
+Width="100"
+VerticalContentAlignment="Center"
+Padding="5"
+Margin="500,25,0,0"
+HorizontalAlignment="Left"
+VerticalAlignment="Top" />
             <ListView
             Name="UserList"
             ItemsSource="{Binding Users}"
