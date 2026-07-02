@@ -18,11 +18,30 @@ namespace WPF_MVVM.ViewModel
 
         public ICommand ShowNewWindowsCommand { get; set; }
 
+        public ICommand SearchPlayerCommand { get; set; }   
+
+        public string Name { get; set; }
+
         public MainViewModel() 
         {
            Users = UserManager.GetUsers();
            ShowWindowsCommand = new RelayCommand(ShowWindow, CanShowWindow);
            ShowNewWindowsCommand = new RelayCommand(ShowNewWindow, CanShowWindow);
+           SearchPlayerCommand = new RelayCommand(SearchPlayer, CanSearchPlayer);
+        }
+
+        private void SearchPlayer(object obj)
+        {
+            var list = UserManager.GetUsers();
+            var selectedPlayer = list.FirstOrDefault(player => player.Name.Equals(Name));
+            if (selectedPlayer == null) return;
+            Users.Clear();
+            Users.Add(selectedPlayer);
+        }
+
+        private bool CanSearchPlayer(object obj)
+        {
+            return true;
         }
 
         private bool CanShowWindow(object obj)

@@ -49,6 +49,17 @@ VerticalAlignment="Top" />
                     </GridView>
                 </ListView.View>
             </ListView>
+            <TextBox Text="{Binding Name}" HorizontalAlignment="Left" Margin="27,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <Button
+                Height="30"
+                Command="{Binding SearchPlayerCommand }"
+                Content="Search"
+                Width="100"
+                VerticalContentAlignment="Center"
+                Padding="5"
+                Margin="175,22,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
         </Grid>
     </Grid>
 </Window>
