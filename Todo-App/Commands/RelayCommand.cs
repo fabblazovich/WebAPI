@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Todo_App.ViewModel
+namespace Todo_App.Commands
 {
     internal class RelayCommand : ICommand
     {

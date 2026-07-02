@@ -8,34 +8,30 @@
         Title="Main" Height="450" Width="800">
     <Grid Background="#F5F5F5">
         <Grid Background="White" Grid.Row="1" Margin="25,40,25,15">
-            <TextBox
-            Name="FilterTextBox"
-            Height="30"
-            Width="200"
-            Margin="25"
-            HorizontalAlignment="Left" />
-
             <Button
-            Height="30"
-            Command="{Binding ShowWindowsCommand}"
+                Height="30"
+                Command="{Binding ShowWindowsCommand}"
                 Content="Add User"
-            Width="100"
-            VerticalContentAlignment="Center"
-            Padding="5"
-            Margin="625,25,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+                Width="100"
+                VerticalContentAlignment="Center"
+                Padding="5"
+                Margin="625,25,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+            />
 
             <Button
-Height="30"
-Command="{Binding ShowNewWindowsCommand }"
-    Content="Show New Window"
-Width="100"
-VerticalContentAlignment="Center"
-Padding="5"
-Margin="500,25,0,0"
-HorizontalAlignment="Left"
-VerticalAlignment="Top" />
+                Height="30"
+                Command="{Binding ShowNewWindowsCommand }"
+                Content="Show New Window"
+                Width="100"
+                VerticalContentAlignment="Center"
+                Padding="5"
+                Margin="500,25,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" 
+            />
+
             <ListView
             Name="UserList"
             ItemsSource="{Binding Users}"
@@ -59,7 +55,8 @@ VerticalAlignment="Top" />
                 Padding="5"
                 Margin="175,22,0,0"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
+                VerticalAlignment="Top" 
+            />
         </Grid>
     </Grid>
 </Window>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF_MVVM.ViewModel;
 
 namespace WPF_MVVM.View
 {
@@ -22,6 +23,8 @@ namespace WPF_MVVM.View
         public NewWindow()
         {
             InitializeComponent();
+            NewWindowViewModel viewModel = new NewWindowViewModel();
+            this.DataContext = viewModel;
         }
     }
 }

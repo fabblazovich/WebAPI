@@ -7,6 +7,33 @@
         mc:Ignorable="d"
         Title="NewWindow" Height="450" Width="800">
     <Grid>
-        
+        <ListBox ItemsSource="{Binding Todos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        BorderBrush="#DDDDDD"
+                        BorderThickness="0,0,0,1"
+                        Padding="8">
+                        <StackPanel>
+                            <TextBlock
+                                Text="{Binding Title}"
+                                FontSize="16"
+                                FontWeight="SemiBold" />
+
+                            <TextBlock
+                                Text="{Binding IsDone}"
+                                FontSize="13"
+                                Foreground="Gray" />
+
+                            <TextBlock
+     Text="{Binding Description}"
+     FontSize="13"
+     Foreground="Gray" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
     </Grid>
 </Window>
